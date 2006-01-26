@@ -43,47 +43,6 @@ NOBATTERY   =  3
 
 UNKNOWN     = -1
 
-
-#exceptions
-
-class ApmError(Exception):
-	"""Base class for APM exceptions"""
-	pass
-
-
-class ApmNoDevice(ApmError):
-	"""Apm is not configured on this host"""
-
-	def __init__(self):
-		pass
-
-	def __str__(self):
-		return "Apm is not configured on this host"
-
-
-class ApmNotImplemented(ApmError):
-	"""No implementation for this operating system"""
-
-	def __init__(self):
-		pass
-
-	def __str__(self):
-		return "No implementation for this operating system"
-
-
-class ApmNoApmLowLevel(ApmError):
-	"""Apm_lowlevel module not found"""
-	
-	def __init__(self):
-		pass
-
-	def __str__(self):
-		return "Apm_lowlevel module not found"
-
-
-
-#interface
-
 class Apm:
 	"""Interface class for APM"""
 	
@@ -103,7 +62,7 @@ class Apm:
 			
 		else:
 			self.apm = None #throw exception (os unknown)
-			raise ApmNotImplemented
+			raise NotImplemented
 		
 
 	def update(self):
@@ -168,8 +127,7 @@ class ApmGeneric(ApmBase):
 			import apm_lowlevel
 			self.apm_lowlevel = apm_lowlevel
 		except ImportError:
-			raise ApmNoApmLowLevel
-
+			raise
 
 		self.ac_line_state = OFFLINE
 		
@@ -184,7 +142,7 @@ class ApmGeneric(ApmBase):
 		apm_info = self.apm_lowlevel.state()
 
 		if (apm_info[0] < 0):
-			raise ApmNoDevice
+			raise EnvironmentError
 
 		self.life_percent = apm_info[1]
 		self.life_time = apm_info[2]
@@ -204,7 +162,7 @@ class ApmLinux(ApmBase):
 		try:
 			apm_proc = open("/proc/apm")
 		except IOError:
-			raise ApmNoDevice
+			raise EnvironmentError
 			
 
 		line = apm_proc.readline()

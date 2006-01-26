@@ -1,5 +1,9 @@
 Lithium - A Battery Status Monitor Applet for the ROX Panel
 
+2006-01-16 Ken Hayber <ken@hayber.us>
+003
+	* Quick fix for ACPI (tested on my PC, but no laptops yet)
+	
 2006-01-15 Ken Hayber <ken@hayber.us>
 002
 	* Created Lithium from Baroque 0.5.1 code base

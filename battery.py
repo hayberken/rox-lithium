@@ -68,23 +68,20 @@ try:
 	import acpi
 	BATTERY = acpi.Acpi()
 	BATT_TYPE = 0
-	OFFLINE_STATE = acpi.OFFLINE
-	print >>sys.stderr, 'Using ACPI!'
-except:
+	OFFLINE = acpi.OFFLINE
+except (ImportError, NotImplementedError, EnvironmentError):
 	try:
 		import pmu #for PowerMac support
 		BATTERY = pmu.Pmu()
 		BATT_TYPE = 1
-		OFFLINE_STATE = pmu.OFFLINE
-		print >>sys.stderr, 'Using PMU!'
-	except:
+		OFFLINE = pmu.OFFLINE
+	except (ImportError, NotImplementedError, EnvironmentError):
 		try:
 			import apm
 			BATTERY = apm.Apm()
 			BATT_TYPE = 1
-			OFFLINE_STATE = apm.OFFLINE
-			print >>sys.stderr, 'Using APM!'
-		except:
+			OFFLINE = apm.OFFLINE
+		except (ImportError, NotImplementedError, EnvironmentError):
 			rox.croak(_("Sorry, but we could not load a Power Management module. Your system is not configured with power management support."))
 		
 		
@@ -144,19 +141,11 @@ class Battery(applet.Applet):
 		
 	def update_display(self, BATTERY):
 		"""Updates all the parts of our applet, and cleans it up if needed."""
-
-		if BATT_TYPE == 0:
-			try:
-				BATTERY.update()
-			except AcpiError:
-				rox.report_exception()
-		else:
-			BATTERY.update()
-
+		BATTERY.update()
 		percent = BATTERY.percent()
 
 		if WARN.value == 'True':
-			if (BATTERY.charging_state() == OFFLINE_STATE and percent <= WARN_LEVEL.int_value):
+			if (BATTERY.charging_state() == OFFLINE and percent <= WARN_LEVEL.int_value):
 				if self.warned == False:
 					rox.info(_("Warning. Battery is currently at %d%%") % (BATTERY.percent(),))
 					self.warned = True
