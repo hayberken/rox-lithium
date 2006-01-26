@@ -69,14 +69,25 @@ try:
 	BATTERY = acpi.Acpi()
 	BATT_TYPE = 0
 	OFFLINE_STATE = acpi.OFFLINE
-except ImportError:
+	print >>sys.stderr, 'Using ACPI!'
+except:
 	try:
-		import apm
-		BATTERY = apm.Apm()
+		import pmu #for PowerMac support
+		BATTERY = pmu.Pmu()
 		BATT_TYPE = 1
-		OFFLINE_STATE = apm.OFFLINE
-	except ImportError:
-		rox.croak(_("Sorry, but we could not load apm.py or acpi.py.  Your system is not configured with power management support."))
+		OFFLINE_STATE = pmu.OFFLINE
+		print >>sys.stderr, 'Using PMU!'
+	except:
+		try:
+			import apm
+			BATTERY = apm.Apm()
+			BATT_TYPE = 1
+			OFFLINE_STATE = apm.OFFLINE
+			print >>sys.stderr, 'Using APM!'
+		except:
+			rox.croak(_("Sorry, but we could not load a Power Management module. Your system is not configured with power management support."))
+		
+		
 class Battery(applet.Applet):
 	"""A Battery Status Monitor Applet"""
 	
@@ -164,6 +175,7 @@ class Battery(applet.Applet):
 
 	def update_tooltip(self):
 		self.tooltips.set_tip(self, self.status() + self.percent() + '%')
+		return 1 #to keep timer running
 
 	def status(self):
 		txt = _("Unknown")

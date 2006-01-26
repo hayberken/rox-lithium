@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <options>
 	<section title='First section'>
-		<frame label='Battery Options'>
+		<frame label='Lithium Options'>
     
 			<toggle name='warn' label='Display a warning when Battery is low?'>
 			      When you want to have the applet display a box when the battery has reached a certain percentage, select this.

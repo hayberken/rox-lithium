@@ -1,34 +1,15 @@
-changes from 0.5.1 to 0.6.0:
+Lithium - A Battery Status Monitor Applet for the ROX Panel
 
-2004-04-26
-
-	* Changed: Moved logic for window and
-		applet into one class.
-
-2004-01-08 Rds <rds@rdsarts.com>
-
-	* Fixed: Options.xml fixed. ;) Widget layout also
-		cleaned up. Should work much better when using
-		text-under-graph mode.
-
-2004-01-07 Rds <rds@rdsarts.com>
-
-	* Fixed: Logic in lifetime display code.
-	* Fixed: Fonts. They now look spiffy. :)
-		Still need to fix the Options.xml file, though.
-
-2004-01-03 Rds <rds@rdsarts.com>
-
-	* Added: Options for displaying text/bar. Now, instead of
-		one hard to figure out line, it's 4. ;)
-	* BROKE: font handling of text. This is broke until I get
-		the new style code in. =\
-
-2003-12-15 Rds <rds@rdsarts.com>
-
-	* fixed: Changed labels in Options.xml to reflect
-		how time-till-update works now.
-
+2006-01-15 Ken Hayber <ken@hayber.us>
+002
+	* Created Lithium from Baroque 0.5.1 code base
+	* Made applet resize with panel
+	* Moved all text display to the tooltip.
+	* Replaced progress bar with icon showing charge/AC status
+	* Big rewrite of structure (not much logic change) to suit my style
+	* Fix acpi.py to raise an Exception when /proc/acpi does not exist
+	* Created pmu.py for PowerMac support
+	* (previously released as Battery 001 without last 2 changes)
 
 changes from 0.5.0 to 0.5.1:
 

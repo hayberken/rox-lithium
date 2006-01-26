@@ -1,7 +1,22 @@
-Baroque is an applet for the ROX Desktop. It shows the battery state of APM
-and ACPI systems.
+Introduction
+~~~~~~~~~~~~
+Lithium is an applet for the ROX Desktop. It shows the battery state on systems
+that support ACPI, APM (or for PowerMacs PMU) interfaces.
 
-Baroque is written in pure Python, compiling is not needed.
-Since version 0.4.0 Baroque is based on apm.py and acpi.py. It should run on
-all systems which are supported by apm.py and/or acpi.py and where ROX is
-installed.
+Lithium is written in pure Python, compiling is not needed. 
+It is based on Baroque 0.5.1, by Rds and Tilo Riemer.
+
+ICONS
+~~~~~
+The default icon set is Horizontal in orientation and is stored in the 'images'
+directory.  There are two alternate sets provided if you do not like this look.
+
+If you replace 'images' with 'images-v', you will get the same set of icons but
+Vertically oriented.  This may look nicer in Vertical Panels.  There is a 3rd
+(older) set that are PNG files instead of SVG (for those that don't like or have
+support for SVG).  These are only Vertical, but are easily converted using GIMP
+or other bitmap tools.  Since these are PNG, the battery.py file will need to be
+edited to replace the string "+'.svg'" with "+'.png'".
+
+Feel free to make your own icons if mine don't suit your tastes.
+
