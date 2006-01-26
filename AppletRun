@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+import findrox; findrox.version(2, 0, 0)
+import rox, os, sys
+
+try:
+	__builtins__._ = rox.i18n.translation(os.path.join(rox.app_dir, 'Messages'))
+	
+	if len(sys.argv) > 1:
+		import battery
+		main = battery.Battery(sys.argv[1])
+		main.show_all()
+	else:
+		rox.info(_("This is a panel applet.  Drag it to your panel to run it.\nI'll now let you edit the configuration options..."))
+		import battery
+		rox.edit_options()
+	rox.mainloop()
+except:
+	rox.report_exception()
