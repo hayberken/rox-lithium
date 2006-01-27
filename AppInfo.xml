@@ -3,7 +3,7 @@
   <Summary>Panel Applet to show battery status for laptops.</Summary>
   <About>
     <Purpose>Battery state applet for ROX</Purpose>
-    <Version>003</Version>
+    <Version>004</Version>
     <Author>Ken Hayber, Rds and Tilo Riemer</Author>
     <License>BSD License</License>
     <Homepage>http://www.hayber.us/rox/Lithium</Homepage>

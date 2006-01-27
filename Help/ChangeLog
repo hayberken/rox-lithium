@@ -1,5 +1,10 @@
 Lithium - A Battery Status Monitor Applet for the ROX Panel
 
+2006-01-26
+004
+	* Fix for incorrect charge level on acpi (Thomas Leonard)
+	* OBO error in image selection index
+
 2006-01-16 Ken Hayber <ken@hayber.us>
 003
 	* Quick fix for ACPI (tested on my PC, but no laptops yet)

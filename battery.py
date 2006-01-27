@@ -155,7 +155,8 @@ class Battery(applet.Applet):
 		if BATTERY.charging_state():
 			pb = self.images[0]
 		else:
-			pb = self.images[(percent/10)]
+			index = min(percent/10+1, 10)
+			pb = self.images[index]
 		self.pixbuf = pb
 		self.resize_image(self.size)
 
