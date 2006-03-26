@@ -120,7 +120,6 @@ class Acpi:
 	def update(self):
 		"""Updates the ACPI state"""
 		self.acpi.update()
-
 	def percent(self):
 		"""Returns percentage capacity of all batteries"""
 		return self.acpi.percent()
@@ -201,6 +200,7 @@ class AcpiLinux:
 
                 # empty lists implies no battery, no capacity etc.
 		self.design_capacity = {}
+		self.last_full_capacity = {}
 		self.life_capacity = {}
 		self.present_rate = {}
 
@@ -245,6 +245,13 @@ class AcpiLinux:
 							#no value --> conversion to int failed
 							self.design_capacity[i] = 0
 							
+					if line.find("last full capacity:") == 0:
+						cap = line.split(":")[1].strip()
+						try:
+							self.last_full_capacity[i] = int(cap.split("m")[0].strip())
+						except ValueError:
+							#no value --> conversion to int failed
+							self.last_full_capacity[i] = 0
 					line = info_file.readline()
 				info_file.close()
 		except IOError:
@@ -253,6 +260,7 @@ class AcpiLinux:
 			# wipe out all lists --> no battery infos
 			self.battery_dir_entries = []
 			self.design_capacity = {}
+			self.last_full_capacity = {}
 			self.life_capacity = {}
 			self.present_rate = {}
 
@@ -469,15 +477,19 @@ class AcpiLinux:
 
 		life_capacity = 0
 		design_capacity = 0
+		last_full_capacity = 0
+		current_capacity = 0
 		for i,c in self.life_capacity.items():
 			life_capacity = life_capacity + c
 			design_capacity = design_capacity + self.design_capacity[i]
+			last_full_capacity = last_full_capacity + self.last_full_capacity[i]
 
-		if design_capacity == 0:
+		current_capacity = max(design_capacity, last_full_capacity)
+		if current_capacity == 0:
 			return 0
 		
 		# should we use try catch instead of the check above?
-		return (life_capacity * 100) / design_capacity
+		return (life_capacity * 100) / current_capacity
 
 
 	def capacity(self):
@@ -521,7 +533,10 @@ class AcpiLinux:
 		for batt, capacity in self.life_capacity.items():
 			totalCapacity += capacity
 			totalRate += self.present_rate[batt]
-		time = totalCapacity / totalRate
+		if totalRate:
+			time = totalCapacity / totalRate
+		else:
+			time = totalCapacity
 		
 		return time
 
