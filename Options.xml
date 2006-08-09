@@ -11,11 +11,19 @@
 			    	Set the percentage at which a warning will be displayed, if desired. At around 10%, your battery will be reaching it's last legs, and at 5% it's officially time to find a wall-outlet.
 			</numentry>
 			<hbox>
-				<numentry name='timeout' label='Tenths of a second to wait between updates:' min='0' max='100' step='10'>
+				<numentry name='timeout' label='Time wait between updates:' min='0' max='100' step='10'>
 				This determines, in tenths of a second, how long to wait between updates.
 				</numentry>
-				<label>milliseconds</label>
+				<label>1/10 sec</label>
 			</hbox>
+			
+			<menu name="theme" label="Theme">
+				<item value="Color"  label="Color"/>
+				<item value="Horiz" label="Horiz"/>
+				<item value="Mono"    label="Mono"/>
+				<item value="Mono+"  label="Mono+"/>
+				<item value='Tango' label='Tango'/>
+			</menu>
 		</frame>
 	</section>
 </options>

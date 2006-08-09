@@ -57,6 +57,7 @@ Menu.set_save_name(APP_NAME, site='hayber.us')
 WARN = Option('warn', True)
 WARN_LEVEL = Option('warn_level', 10)
 TIMER = Option('timeout', "1000")
+THEME = Option('theme', 'Color')
 
 #Enable notification of options changes
 rox.app_options.notify()
@@ -92,22 +93,13 @@ class Battery(applet.Applet):
 	msg = 0
 	vertical = False
 
-	images = []	
-	
 	def __init__(self, id):
 		"""Initialize applet."""
 		applet.Applet.__init__(self, id)
 
 		# load the applet icon
 		self.image = gtk.Image()
-		
-		for name in [
-			'battery0', 'battery1', 'battery2', 'battery3', 'battery4', 
-			'battery5', 'battery6', 'battery7', 'battery8', 'battery9',  
-			'battery10' 
-			]:
-			self.images.append(gtk.gdk.pixbuf_new_from_file(os.path.join(rox.app_dir, 'images', name+'.svg')))
-
+		self.load_icons()		
 		self.pixbuf = self.images[0]
 		self.image.set_from_pixbuf(self.pixbuf)
 		self.resize_image(8)
@@ -132,14 +124,32 @@ class Battery(applet.Applet):
 		self.connect('delete_event', self.quit)
 		rox.app_options.add_notify(self.get_options)
 
-		gobject.timeout_add(int(TIMER.int_value) * 100, self.update_display, BATTERY)
+		# user adjustable timer to control how often hardware is polled
+		self.timer = gobject.timeout_add(int(TIMER.int_value) * 100, self.update_display)
+		
+		# a fixed timer to toggle the tooltip between status and time remaining
 		gobject.timeout_add(5000, self.update_tooltip)
 
-		self.update_display(BATTERY)
+		self.update_display()
 		self.update_tooltip()
 		self.show()	
 		
-	def update_display(self, BATTERY):
+	def load_icons(self):
+		"""load the icons for the selected theme"""		
+		theme = THEME.value
+		self.images = []
+		
+		for name in [
+			'battery0',
+			'battery10', 'battery20', 'battery40', 'battery60',
+			'battery80', 'battery100',
+			'charging10', 'charging20', 'charging40', 'charging60',
+			'charging80', 'charging100',
+			]:
+			self.images.append(gtk.gdk.pixbuf_new_from_file(os.path.join(rox.app_dir, 'themes', theme, name+'.svg')))
+
+		
+	def update_display(self):
 		"""Updates all the parts of our applet, and cleans it up if needed."""
 		BATTERY.update()
 		percent = BATTERY.percent()
@@ -151,12 +161,26 @@ class Battery(applet.Applet):
 					self.warned = True
 			else:
 				self.warned = False
-
-		if BATTERY.charging_state():
-			pb = self.images[0]
+				
+		if percent == 0:
+			index = 0
+		elif percent < 20:
+			index = 1
+		elif percent < 40:
+			index = 2
+		elif percent < 60:
+			index = 3
+		elif percent < 80:
+			index = 4
+		elif percent < 100:
+			index = 5
 		else:
-			index = min(percent/10+1, 10)
-			pb = self.images[index]
+			index = 6
+			
+		if BATTERY.charging_state():
+			index += 6
+		
+		pb = self.images[index]
 		self.pixbuf = pb
 		self.resize_image(self.size)
 
@@ -201,10 +225,8 @@ class Battery(applet.Applet):
 	def percent(self):
 		return str(BATTERY.percent())
 	
-		
 	def resize(self, widget, rectangle):
 		"""Called when the panel sends a size."""
-
 		if self.vertical:
 			size = rectangle[2]
 		else:
@@ -220,11 +242,11 @@ class Battery(applet.Applet):
 
 	def button_press(self, window, event):
 		"""Handle mouse clicks by popping up the matching menu."""
-		if event.button == 1:
-			self.run_it()
-		elif event.button == 2:
-			self.checkit()
-		elif event.button == 3:
+#		if event.button == 1:
+#			self.run_it()
+#		if event.button == 2:
+#			self.checkit()
+		if event.button == 3:
 			self.appmenu.popup(self, event, self.position_menu)
 
 	def get_panel_orientation(self):
@@ -242,7 +264,13 @@ class Battery(applet.Applet):
 
 	def get_options(self, widget=None, rebuild=False, response=False):
 		"""Used as the notify callback when options change."""
-		pass
+		if THEME.has_changed:
+			self.load_icons()
+			self.update_display()
+		
+		if TIMER.has_changed:
+			if self.timer: gobject.source_remove(self.timer)		
+			self.timer = gobject.timeout_add(int(TIMER.int_value) * 100, self.update_display)		 
 
 	def show_options(self, button=None):
 		"""Open the options edit dialog."""
@@ -265,5 +293,6 @@ class Battery(applet.Applet):
 
 	def quit(self, *args):
 		"""Quit applet and close everything."""
+		if self.timer: gobject.source_remove(self.timer)		
 		self.destroy()
 
