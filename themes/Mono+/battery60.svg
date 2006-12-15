@@ -15,8 +15,8 @@
    sodipodi:version="0.32"
    inkscape:version="0.43"
    version="1.0"
-   sodipodi:docbase="/home/ken"
-   sodipodi:docname="battery0.svg">
+   sodipodi:docbase="/home/ken/Apps/Applets/Lithium/themes/Mono+/bat"
+   sodipodi:docname="battery60.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -75,44 +75,23 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.10538769;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4.5999999;stroke-opacity:1"
-       d="M 10.696309,5.3013443 C 14.796497,6.5890262 25.203503,6.532208 29.303691,5.3013443 C 29.398123,5.3013443 29.474146,5.371721 29.474146,5.4591398 L 29.474146,34.730223 C 29.474146,34.817642 29.398123,34.888019 29.303691,34.888019 C 23.385322,37.002656 16.841951,36.827981 10.696309,34.888019 C 10.601877,34.888019 10.525854,34.817642 10.525854,34.730223 L 10.525854,5.4591398 C 10.525854,5.371721 10.601877,5.3013443 10.696309,5.3013443 z "
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#505050;stroke-width:2.10538769;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4.5999999;stroke-opacity:1"
+       d="M 10.696309,5.7826093 C 14.796497,7.0702912 25.203503,7.013473 29.303691,5.7826093 C 29.398123,5.7826093 29.474146,5.852986 29.474146,5.9404048 L 29.474146,35.211488 C 29.474146,35.298907 29.398123,35.369284 29.303691,35.369284 C 23.385322,37.483921 16.841951,37.309246 10.696309,35.369284 C 10.601877,35.369284 10.525854,35.298907 10.525854,35.211488 L 10.525854,5.9404048 C 10.525854,5.852986 10.601877,5.7826093 10.696309,5.7826093 z "
        id="rect1307"
        sodipodi:nodetypes="ccccccccc" />
     <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.46083665;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#505050;fill-opacity:1;stroke:#505050;stroke-width:1.46083665;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2184"
        width="8.9610023"
        height="1.1470486"
        x="15.519499"
-       y="2.3059962" />
+       y="2.7872612" />
     <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.46083665;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1313"
-       width="8.9610023"
-       height="1.1470486"
-       x="15.519499"
-       y="22.626476" />
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.46083665;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1315"
-       width="8.9610023"
-       height="1.1470486"
-       x="15.519499"
-       y="27.026476" />
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.46083665;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1317"
-       width="8.9610023"
-       height="1.1470486"
-       x="15.519499"
-       y="31.426476" />
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.46083665;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1319"
-       width="8.9610023"
-       height="1.1470486"
-       x="15.519499"
-       y="18.226475" />
+       style="fill:#505050;fill-opacity:1;fill-rule:evenodd;stroke:#505050;stroke-width:1.61837268;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1339"
+       width="11.753178"
+       height="16.485973"
+       x="14.222619"
+       y="16.109531" />
   </g>
 </svg>

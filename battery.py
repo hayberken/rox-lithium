@@ -44,7 +44,7 @@ from rox import applet, filer, tasks
 from rox.options import Option
 
 # globals
-APP_NAME = 'Battery'
+APP_NAME = 'Lithium'
 APP_DIR = rox.app_dir
 APP_SIZE = [28, 28]
 
@@ -63,6 +63,17 @@ THEME = Option('theme', 'Color')
 rox.app_options.notify()
 
 BATT_TYPE = -1	# 0 = ACPI, 1 = APM
+
+# notification
+try:
+	HAVE_NOTIFY = False
+	import pynotify
+	if pynotify.init(APP_NAME):
+		HAVE_NOTIFY = True
+except:
+	pass
+
+
 
 # Initalize the battery object
 try:
@@ -127,9 +138,6 @@ class Battery(applet.Applet):
 		# user adjustable timer to control how often hardware is polled
 		self.timer = gobject.timeout_add(int(TIMER.int_value) * 100, self.update_display)
 		
-		# a fixed timer to toggle the tooltip between status and time remaining
-		gobject.timeout_add(5000, self.update_tooltip)
-
 		self.update_display()
 		self.update_tooltip()
 		self.show()	
@@ -148,6 +156,13 @@ class Battery(applet.Applet):
 			]:
 			self.images.append(gtk.gdk.pixbuf_new_from_file(os.path.join(rox.app_dir, 'themes', theme, name+'.svg')))
 
+	def notify(self, string):
+		if HAVE_NOTIFY:
+			n = pynotify.Notification(APP_NAME, string, 'battery-caution')
+			n.set_urgency(pynotify.URGENCY_CRITICAL)
+			n.show()
+		else:
+			rox.info(string)
 		
 	def update_display(self):
 		"""Updates all the parts of our applet, and cleans it up if needed."""
@@ -157,7 +172,7 @@ class Battery(applet.Applet):
 		if WARN.value == 'True':
 			if (BATTERY.charging_state() == OFFLINE and percent <= WARN_LEVEL.int_value):
 				if self.warned == False:
-					rox.info(_("Warning. Battery is currently at %d%%") % (BATTERY.percent(),))
+					self.notify(_("Warning. Battery is currently at %d%%") % (BATTERY.percent(),))
 					self.warned = True
 			else:
 				self.warned = False
@@ -184,12 +199,13 @@ class Battery(applet.Applet):
 		self.pixbuf = pb
 		self.resize_image(self.size)
 
+		self.update_tooltip()
+
 		return 1 # to keep the timer going!
 
 
 	def update_tooltip(self):
 		self.tooltips.set_tip(self, self.status() + self.percent() + '%')
-		return 1 #to keep timer running
 
 	def status(self):
 		txt = _("Unknown")
@@ -200,26 +216,21 @@ class Battery(applet.Applet):
 			txt = _("Charging: ")
 		else:
 			# Discharing from the battery
-			if self.msg == 1:
-				self.msg = 0
-				txt = _("Battery: ")
-			else:
-				self.msg = 1
-				if BATT_TYPE == 1:
-					temp2 = BATTERY.time()
-					temp = int(temp2 / 60)
-					temp2 -= (temp * 60)
-					if temp < 0:
-						txt = _("Calculating... ")
-					else:
-						txt = "(%d:%02d) " % (temp, temp2)
+			if BATT_TYPE == 1:
+				temp2 = BATTERY.time()
+				temp = int(temp2 / 60)
+				temp2 -= (temp * 60)
+				if temp < 0:
+					txt = _("Calculating... ")
 				else:
-					try:
-						temp = BATTERY.estimated_lifetime()
-						temp2 = int(60 * (temp - int(temp)))
-						txt = "(%d:%02d) " % (temp, temp2)
-					except ValueError:
-						txt = _("Charging")
+					txt = "%s (%d:%02d) " % (_("Battery"), temp, temp2)
+			else:
+				try:
+					temp = BATTERY.estimated_lifetime()
+					temp2 = int(60 * (temp - int(temp)))
+					txt = "%s (%d:%02d) " % (_("Battery"), temp, temp2)
+				except ValueError:
+					txt = _("Charging")
 		return txt
 
 	def percent(self):
@@ -228,9 +239,9 @@ class Battery(applet.Applet):
 	def resize(self, widget, rectangle):
 		"""Called when the panel sends a size."""
 		if self.vertical:
-			size = rectangle[2]
+			size = rectangle[2] -2
 		else:
-			size = rectangle[3]
+			size = rectangle[3] -2
 		if size != self.size:
 			self.resize_image(size)
 
