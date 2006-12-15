@@ -1,5 +1,11 @@
 Lithium - A Battery Status Monitor Applet for the ROX Panel
 
+2006-12-15 Ken Hayber <ken@hayber.us>
+	* Combine charge level and status in one tooltip (don't switch back
+	and forth)
+	* Add notification support (libnotify)
+	* Theme changes
+
 2006-08-09 Ken Hayber <ken@hayber.us>
 005
 	* Add theme switching code
