@@ -160,6 +160,7 @@ class Battery(applet.Applet):
 		if HAVE_NOTIFY:
 			n = pynotify.Notification(APP_NAME, string, 'battery-caution')
 			n.set_urgency(pynotify.URGENCY_CRITICAL)
+			n.attach_to_widget(self)
 			n.show()
 		else:
 			rox.info(string)

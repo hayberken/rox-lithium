@@ -484,7 +484,7 @@ class AcpiLinux:
 			design_capacity = design_capacity + self.design_capacity[i]
 			last_full_capacity = last_full_capacity + self.last_full_capacity[i]
 
-		current_capacity = max(design_capacity, last_full_capacity)
+		current_capacity = last_full_capacity #max(design_capacity, last_full_capacity)
 		if current_capacity == 0:
 			return 0
 		
